@@ -29,7 +29,7 @@ const FONT = {
 const CONFIG = {
   web3formsKey: '17457e6e-3788-4266-8fa2-4737d392b638',
   whatsappNumber: '528145931116',
-  whatsappMessage: 'Hola, quiero información sobre un proyecto con HAND.'
+  whatsappMessage: 'Hola, quiero información sobre un proyecto con HND.'
 };
 
 // Wordmark SVG (kept from original — Lnd letterform)

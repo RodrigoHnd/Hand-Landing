@@ -268,7 +268,7 @@ const Contacto = React.forwardRef((props, ref) => {
               <div style={{ ...fieldLabel, marginBottom: 14 }}>Accesos directos</div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                 <a
-                  href="https://wa.me/528145931116?text=Hola%20HAND%2C%20me%20interesa%20platicar%20sobre%20un%20proyecto."
+                  href="https://wa.me/528145931116?text=Hola%20HND%2C%20me%20interesa%20platicar%20sobre%20un%20proyecto."
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -286,7 +286,7 @@ const Contacto = React.forwardRef((props, ref) => {
                   WhatsApp ↗
                 </a>
                 <a
-                  href="https://instagram.com/hand.arquitectura"
+                  href="https://www.instagram.com/hnd.arquitectura/"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -304,7 +304,7 @@ const Contacto = React.forwardRef((props, ref) => {
                   Instagram
                 </a>
                 <a
-                  href="https://facebook.com/hand.arquitectura"
+                  href="https://www.facebook.com/profile.php?id=61570957922574"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -690,7 +690,7 @@ const Footer = () => {
             </ul>
             <div style={{ display: 'flex', gap: 8 }}>
               <a
-                href="https://instagram.com/hand.arquitectura"
+                href="https://www.instagram.com/hnd.arquitectura/"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -708,7 +708,7 @@ const Footer = () => {
                 IG ↗
               </a>
               <a
-                href="https://facebook.com/hand.arquitectura"
+                href="https://www.facebook.com/profile.php?id=61570957922574"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{

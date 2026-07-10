@@ -339,7 +339,7 @@ const Hero = ({ onNav }) => {
                 Cuéntanos tu proyecto ↗
               </button>
               <a
-                href="https://wa.me/528145931116?text=Hola%20HAND%2C%20me%20interesa%20agendar%20una%20cita"
+                href="https://wa.me/528145931116?text=Hola%20HND%2C%20me%20interesa%20agendar%20una%20cita"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
