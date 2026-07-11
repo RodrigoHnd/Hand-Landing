@@ -234,10 +234,11 @@ const ProjectCard = ({ proyecto, index, totalCards, scrollY, cardStartY, vh, isD
 
   return (
     <div style={{
-      position: 'sticky',
-      top: 96,
+      position: isDesktop ? 'sticky' : 'relative',
+      top: isDesktop ? 96 : 'auto',
       paddingTop: 0,
       paddingBottom: index < totalCards - 1 ? '5vh' : 0,
+      marginBottom: isDesktop ? 0 : 24,
       zIndex: index + 1
     }}>
       <div style={{ ...{
@@ -251,11 +252,11 @@ const ProjectCard = ({ proyecto, index, totalCards, scrollY, cardStartY, vh, isD
           display: 'flex',
           flexDirection: 'column',
           gap: 20,
-          height: '82vh',
-          transform: `scale(${currentScale})`,
+          height: isDesktop ? '82vh' : 'auto',
+          transform: isDesktop ? `scale(${currentScale})` : 'none',
           transformOrigin: 'top center',
           transition: 'transform 0.1s linear',
-          overflow: 'hidden',
+          overflow: isDesktop ? 'hidden' : 'visible',
           boxShadow: '0 12px 40px rgba(0,0,0,0.15)'
         }, backgroundColor: "rgb(245, 241, 230)" }}>
         {/* Top row */}
@@ -310,12 +311,13 @@ const ProjectCard = ({ proyecto, index, totalCards, scrollY, cardStartY, vh, isD
             </div>
           </div>
 
-          {/* Botón Más detalles + burbuja al hover */}
+          {/* Botón Más detalles + burbuja al hover (solo desktop) */}
+          {isDesktop &&
           <div
-            style={{ position: 'relative', justifySelf: isDesktop ? 'end' : 'start' }}
+            style={{ position: 'relative', justifySelf: 'end' }}
             onMouseEnter={() => setBubbleOpen(true)}
             onMouseLeave={() => setBubbleOpen(false)}>
-            
+
             <div style={{
               borderRadius: 100,
               border: `1px solid ${bubbleOpen ? BRAND.terracota : BRAND.tinta}`,
@@ -345,7 +347,22 @@ const ProjectCard = ({ proyecto, index, totalCards, scrollY, cardStartY, vh, isD
             </div>
             <DetailsBubble visible={bubbleOpen} info={proyecto.detalles} isDesktop={isDesktop} />
           </div>
+          }
         </div>
+
+        {/* Detalles inline (solo móvil) — reemplaza la burbuja de hover */}
+        {!isDesktop &&
+        <p style={{
+          fontFamily: FONT.sans,
+          fontWeight: 300,
+          fontSize: 13,
+          lineHeight: 1.6,
+          color: BRAND.gris,
+          margin: 0
+        }}>
+          {proyecto.detalles}
+        </p>
+        }
 
         {/* Bottom: grid 40/60 con imágenes */}
         <div style={{
@@ -357,7 +374,8 @@ const ProjectCard = ({ proyecto, index, totalCards, scrollY, cardStartY, vh, isD
         }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12, minHeight: 0 }}>
             <div style={{
-              flex: 1,
+              flex: isDesktop ? 1 : 'none',
+              height: isDesktop ? 'auto' : 220,
               borderRadius: isDesktop ? 24 : 16,
               overflow: 'hidden',
               backgroundImage: `url(${proyecto.imgs[0]})`,
@@ -366,7 +384,8 @@ const ProjectCard = ({ proyecto, index, totalCards, scrollY, cardStartY, vh, isD
               minHeight: 100
             }} />
             <div style={{
-              flex: 1.4,
+              flex: isDesktop ? 1.4 : 'none',
+              height: isDesktop ? 'auto' : 220,
               borderRadius: isDesktop ? 24 : 16,
               overflow: 'hidden',
               backgroundImage: `url(${proyecto.imgs[1]})`,
@@ -376,6 +395,7 @@ const ProjectCard = ({ proyecto, index, totalCards, scrollY, cardStartY, vh, isD
             }} />
           </div>
           <div style={{
+            height: isDesktop ? 'auto' : 220,
             borderRadius: isDesktop ? 24 : 16,
             overflow: 'hidden',
             backgroundImage: `url(${proyecto.imgs[2]})`,
