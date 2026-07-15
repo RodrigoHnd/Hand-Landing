@@ -55,7 +55,7 @@ const Logo = ({ height = 48, color = BRAND.marfil }) => {
 // IMAGES — file paths to project images
 // ============================================================
 const IMG = {
-  portada: 'images/portada.png',
+  portada: 'images/portada.jpg',
   // Casa Lomas Altas
   lomas1: 'images/lomas-1.jpg', // exterior verde
   lomas2: 'images/lomas-2.jpg', // patio blanco
@@ -63,9 +63,9 @@ const IMG = {
   // Royal Contry departamento
   royal1: 'images/royal-1.jpg', // sala madera con poltrona
   royal2: 'images/royal-2.jpeg', // sala panelada
-  royal3: 'images/royal-3.png', // cocina blanca
+  royal3: 'images/royal-3.jpg', // cocina blanca
   // Casa Zibata Querétaro
-  zibata1: 'images/zibata-1.png', // exterior noche
+  zibata1: 'images/zibata-1.jpg', // exterior noche
   zibata2: 'images/zibata-2.jpg', // interior con escalera/comedor
   zibata3: 'images/zibata-3.jpg', // exterior vol arbol
   zibata4: 'images/zibata-4.jpg' // fachada cielo
