@@ -171,6 +171,161 @@ const Hero = ({ onNav }) => {
   const { h: vh } = useViewportSize();
   const isDesktop = useIsDesktop();
 
+  // ── MÓVIL: hero estático sencillo, sin lógica de scroll ──
+  if (!isDesktop) {
+    return (
+      <section style={{
+        minHeight: '100vh',
+        backgroundColor: BRAND.tinta,
+        position: 'relative',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 'clamp(56px, 12vh, 96px) clamp(20px, 5vw, 32px)'
+      }}>
+        {/* Fondo: portada */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `url(${IMG.portada})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }} />
+        {/* Overlay para legibilidad */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: `linear-gradient(180deg, ${BRAND.tinta}88 0%, ${BRAND.tinta}55 45%, ${BRAND.tinta}EE 100%)`
+        }} />
+
+        {/* Contenido */}
+        <div style={{
+          position: 'relative',
+          zIndex: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+          width: '100%'
+        }}>
+          {/* 1. Wordmark */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            marginBottom: 28
+          }}>
+            <Logo height={78} color={BRAND.marfil} />
+            <div style={{
+              fontFamily: FONT.sans,
+              fontWeight: 300,
+              fontSize: 11,
+              letterSpacing: '0.05em',
+              color: BRAND.marfil,
+              marginTop: 8
+            }}>
+              arquitectura y construcción
+            </div>
+          </div>
+
+          {/* 2. Eyebrow */}
+          <div style={{
+            fontFamily: FONT.mono,
+            fontSize: 11,
+            letterSpacing: '0.3em',
+            textTransform: 'uppercase',
+            color: BRAND.marfil,
+            opacity: 0.85,
+            marginBottom: 20
+          }}>
+            HOLA, SOMOS HND —
+          </div>
+
+          {/* 3. Título */}
+          <h1 style={{
+            fontFamily: FONT.sans,
+            fontSize: 'clamp(30px, 8vw, 44px)',
+            lineHeight: 0.98,
+            letterSpacing: '-0.03em',
+            textTransform: 'uppercase',
+            color: BRAND.marfil,
+            margin: 0,
+            marginBottom: 20
+          }}>
+            <span style={{ fontWeight: 800, display: 'block' }}>DISEÑO, FUNCIONALIDAD</span>
+            <span style={{ fontWeight: 300, display: 'block' }}> Y EJECUCIÓN.</span>
+          </h1>
+
+          {/* 4. Párrafo */}
+          <p style={{
+            fontFamily: FONT.sans,
+            fontWeight: 300,
+            fontSize: 15,
+            lineHeight: 1.5,
+            color: `${BRAND.marfil}EE`,
+            maxWidth: '40ch',
+            margin: '0 0 32px'
+          }}>
+            Con procesos claros y presupuestos bien pensados desde el principio.
+          </p>
+
+          {/* 5. Botones */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 12,
+            width: '100%',
+            maxWidth: 340
+          }}>
+            <button
+              onClick={() => onNav('contacto')}
+              style={{
+                backgroundColor: BRAND.marfil,
+                color: BRAND.terracota,
+                padding: '16px 28px',
+                fontFamily: FONT.mono,
+                fontSize: 11,
+                fontWeight: 500,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'opacity 0.3s'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.opacity = 0.85}
+              onMouseLeave={(e) => e.currentTarget.style.opacity = 1}>
+              Cuéntanos tu proyecto ↗
+            </button>
+            <a
+              href="https://wa.me/528145931116?text=Hola%20HND%2C%20me%20interesa%20agendar%20una%20cita"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                padding: '16px 28px',
+                fontFamily: FONT.mono,
+                fontSize: 11,
+                fontWeight: 500,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                border: `0.5px solid ${BRAND.marfil}`,
+                color: BRAND.marfil,
+                textDecoration: 'none',
+                display: 'inline-block',
+                textAlign: 'center',
+                transition: 'background 0.3s'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${BRAND.marfil}15`}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+              Agenda una cita
+            </a>
+          </div>
+        </div>
+      </section>);
+
+  }
+
   const animEnd = vh * 0.8;
   const progress = Math.max(0, Math.min(1, scrollY / animEnd));
   const eased = 1 - Math.pow(1 - progress, 3);
