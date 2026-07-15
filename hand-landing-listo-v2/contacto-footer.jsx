@@ -133,7 +133,7 @@ const Contacto = React.forwardRef((props, ref) => {
     const payload = {
       access_key: CONFIG.web3formsKey,
       subject: `Nueva cotización · Proyecto ${form.tipo} — ${form.nombre} (Folio #${String(folio).padStart(4, '0')})`,
-      from_name: 'Landing HAND Arquitectura',
+      from_name: 'Landing HND Arquitectura',
       'Folio': `#${String(folio).padStart(4, '0')}`,
       'Nombre': form.nombre,
       'Email': form.email,
@@ -360,7 +360,7 @@ const Contacto = React.forwardRef((props, ref) => {
                 marginTop: 20,
                 maxWidth: '42ch'
               }}>
-                  Recibimos tu información. Un miembro del equipo HAND te contactará en un plazo máximo de 24 horas hábiles con los siguientes pasos.
+                  Recibimos tu información. Un miembro del equipo HND te contactará en un plazo máximo de 24 horas hábiles con los siguientes pasos.
                 </p>
               </div> :
 

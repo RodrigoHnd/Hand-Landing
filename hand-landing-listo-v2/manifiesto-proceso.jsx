@@ -232,11 +232,11 @@ const Proceso = React.forwardRef((props, ref) => {
                 gap: 14
               }}>
                   <div style={{ flexShrink: 0 }}>
-                    <SilhouettePhoto
+                    <Silhouette
                     shape={p.shape}
-                    imgSrc={p.img}
-                    width={isDesktop ? 96 : 110} />
-                  
+                    color={BRAND.terracota}
+                    width={isDesktop ? 64 : 72} />
+
                   </div>
                   <span style={{
                   fontFamily: FONT.mono,
