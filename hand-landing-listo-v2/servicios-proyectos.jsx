@@ -220,8 +220,138 @@ const DetailsBubble = ({ visible, info, isDesktop }) => {
 
 };
 
-const ProjectCard = ({ proyecto, index, totalCards, scrollY, cardStartY, vh, isDesktop }) => {
+// ============================================================
+// LIGHTBOX — visor de galería a pantalla completa
+// ============================================================
+const Lightbox = ({ images, startIndex, onClose }) => {
+  const [index, setIndex] = useStateSP(startIndex || 0);
+  const total = images.length;
+
+  const go = (delta) => setIndex((i) => (i + delta + total) % total);
+
+  useEffectSP(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();else
+      if (e.key === 'ArrowLeft') go(-1);else
+      if (e.key === 'ArrowRight') go(1);
+    };
+    window.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [total]);
+
+  const arrowStyle = {
+    position: 'absolute',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    width: 48,
+    height: 48,
+    borderRadius: '50%',
+    border: 'none',
+    backgroundColor: 'rgba(244,241,230,0.14)',
+    color: BRAND.marfil,
+    fontSize: 30,
+    lineHeight: 1,
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 0,
+    transition: 'background-color 0.3s'
+  };
+
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 2000,
+        backgroundColor: 'rgba(26,26,24,0.93)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+
+      {/* Cerrar */}
+      <button
+        onClick={(e) => {e.stopPropagation();onClose();}}
+        aria-label="Cerrar"
+        style={{
+          position: 'absolute',
+          top: 16,
+          right: 16,
+          width: 48,
+          height: 48,
+          border: 'none',
+          background: 'transparent',
+          color: BRAND.marfil,
+          fontSize: 26,
+          lineHeight: 1,
+          cursor: 'pointer',
+          padding: 0
+        }}>
+        ✕
+      </button>
+
+      {/* Flechas */}
+      {total > 1 &&
+      <React.Fragment>
+        <button
+          onClick={(e) => {e.stopPropagation();go(-1);}}
+          aria-label="Anterior"
+          style={{ ...arrowStyle, left: 'clamp(8px, 3vw, 32px)' }}>
+          ‹
+        </button>
+        <button
+          onClick={(e) => {e.stopPropagation();go(1);}}
+          aria-label="Siguiente"
+          style={{ ...arrowStyle, right: 'clamp(8px, 3vw, 32px)' }}>
+          ›
+        </button>
+      </React.Fragment>
+      }
+
+      <img
+        src={images[index]}
+        alt={`Foto ${index + 1} de ${total}`}
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          maxWidth: '90vw',
+          maxHeight: '85vh',
+          objectFit: 'contain',
+          borderRadius: 8,
+          boxShadow: '0 24px 80px rgba(0,0,0,0.5)'
+        }} />
+
+      {/* Contador */}
+      {total > 1 &&
+      <div style={{
+        position: 'absolute',
+        bottom: 20,
+        left: 0,
+        right: 0,
+        textAlign: 'center',
+        fontFamily: FONT.mono,
+        fontSize: 12,
+        letterSpacing: '0.12em',
+        color: BRAND.marfil,
+        pointerEvents: 'none'
+      }}>
+        {index + 1} / {total}
+      </div>
+      }
+    </div>);
+
+};
+
+const ProjectCard = ({ proyecto, index, totalCards, scrollY, cardStartY, vh, isDesktop, onOpenImage }) => {
   const [bubbleOpen, setBubbleOpen] = useStateSP(false);
+  const [hoverImg, setHoverImg] = useStateSP(null);
 
   const cardScrollStart = cardStartY;
   const cardProgress = Math.max(0, Math.min(1, (scrollY - cardScrollStart) / vh));
@@ -231,6 +361,17 @@ const ProjectCard = ({ proyecto, index, totalCards, scrollY, cardStartY, vh, isD
   Math.max(0, Math.min(1, (scrollY - (cardStartY + vh * 0.95)) / vh)) :
   0;
   const currentScale = isLast ? 1 : 1 - nextCardProgress * 0.04;
+
+  // Capa interna de la foto: escala sutil al hover sin desbordar el contenedor
+  const imgLayer = (i) => ({
+    position: 'absolute',
+    inset: 0,
+    backgroundImage: `url(${proyecto.imgs[i]})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    transform: hoverImg === i ? 'scale(1.06)' : 'scale(1)',
+    transition: 'transform 0.4s'
+  });
 
   return (
     <div style={{
@@ -373,37 +514,50 @@ const ProjectCard = ({ proyecto, index, totalCards, scrollY, cardStartY, vh, isD
           minHeight: 0
         }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12, minHeight: 0 }}>
-            <div style={{
-              flex: isDesktop ? 1 : 'none',
-              height: isDesktop ? 'auto' : 220,
-              borderRadius: isDesktop ? 24 : 16,
-              overflow: 'hidden',
-              backgroundImage: `url(${proyecto.imgs[0]})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              minHeight: 100
-            }} />
-            <div style={{
-              flex: isDesktop ? 1.4 : 'none',
-              height: isDesktop ? 'auto' : 220,
-              borderRadius: isDesktop ? 24 : 16,
-              overflow: 'hidden',
-              backgroundImage: `url(${proyecto.imgs[1]})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              minHeight: 100
-            }} />
+            <div
+              onClick={() => onOpenImage(proyecto.imgs, 0)}
+              onMouseEnter={() => setHoverImg(0)}
+              onMouseLeave={() => setHoverImg(null)}
+              style={{
+                flex: isDesktop ? 1 : 'none',
+                height: isDesktop ? 'auto' : 220,
+                borderRadius: isDesktop ? 24 : 16,
+                overflow: 'hidden',
+                minHeight: 100,
+                position: 'relative',
+                cursor: 'pointer'
+              }}>
+              <div style={imgLayer(0)} />
+            </div>
+            <div
+              onClick={() => onOpenImage(proyecto.imgs, 1)}
+              onMouseEnter={() => setHoverImg(1)}
+              onMouseLeave={() => setHoverImg(null)}
+              style={{
+                flex: isDesktop ? 1.4 : 'none',
+                height: isDesktop ? 'auto' : 220,
+                borderRadius: isDesktop ? 24 : 16,
+                overflow: 'hidden',
+                minHeight: 100,
+                position: 'relative',
+                cursor: 'pointer'
+              }}>
+              <div style={imgLayer(1)} />
+            </div>
           </div>
-          <div style={{
-            height: isDesktop ? 'auto' : 220,
-            borderRadius: isDesktop ? 24 : 16,
-            overflow: 'hidden',
-            backgroundImage: `url(${proyecto.imgs[2]})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            minHeight: 200,
-            position: 'relative'
-          }}>
+          <div
+            onClick={() => onOpenImage(proyecto.imgs, 2)}
+            onMouseEnter={() => setHoverImg(2)}
+            onMouseLeave={() => setHoverImg(null)}
+            style={{
+              height: isDesktop ? 'auto' : 220,
+              borderRadius: isDesktop ? 24 : 16,
+              overflow: 'hidden',
+              minHeight: 200,
+              position: 'relative',
+              cursor: 'pointer'
+            }}>
+            <div style={imgLayer(2)} />
             <div style={{
               position: 'absolute',
               bottom: 0, left: 0, right: 0,
@@ -435,6 +589,7 @@ const Proyectos = React.forwardRef((props, ref) => {
   const [sectionTop, setSectionTop] = useStateSP(0);
   const { h: vh } = useViewportSize();
   const isDesktop = useIsDesktop();
+  const [lightbox, setLightbox] = useStateSP(null); // { images, index } o null
 
   useEffectSP(() => {
     if (sectionRef.current) {
@@ -554,10 +709,18 @@ const Proyectos = React.forwardRef((props, ref) => {
           scrollY={scrollY}
           cardStartY={sectionTop + i * vh * 0.95}
           vh={vh}
-          isDesktop={isDesktop} />
+          isDesktop={isDesktop}
+          onOpenImage={(images, index) => setLightbox({ images, index })} />
 
         )}
       </div>
+
+      {lightbox &&
+      <Lightbox
+        images={lightbox.images}
+        startIndex={lightbox.index}
+        onClose={() => setLightbox(null)} />
+      }
     </section>);
 
 });
