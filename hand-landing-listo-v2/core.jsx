@@ -64,6 +64,10 @@ const IMG = {
   royal1: 'images/royal-1.jpg', // sala madera con poltrona
   royal2: 'images/royal-2.jpeg', // sala panelada
   royal3: 'images/royal-3.jpg', // cocina blanca
+  // Proyecto Polanco CDMX
+  polanco1: 'images/polanco-1.jpg',
+  polanco2: 'images/polanco-2.jpg',
+  polanco3: 'images/polanco-3.jpg',
   // Casa Zibata Querétaro
   zibata1: 'images/zibata-1.jpg', // exterior noche
   zibata2: 'images/zibata-2.jpg', // interior con escalera/comedor

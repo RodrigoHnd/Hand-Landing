@@ -471,11 +471,11 @@ const Proyectos = React.forwardRef((props, ref) => {
   {
     n: '03',
     categoria: 'RESIDENCIAL · DISEÑO Y EJECUCIÓN',
-    nombre: 'Casa Zibata',
-    year: 'El Marqués, Qro · 2024',
-    tagline: 'Diseño y ejecución integral: amplitud, luz natural y conexión con el entorno.',
-    detalles: 'Proyecto residencial desarrollado integralmente, desde el diseño hasta la ejecución de obra. Pensado para integrar amplitud, funcionalidad, iluminación natural y una conexión constante con la naturaleza.',
-    imgs: [IMG.zibata1, IMG.zibata3, IMG.zibata4],
+    nombre: 'Proyecto Polanco',
+    year: 'CDMX · 2026',
+    tagline: 'Diseño y ejecución.',
+    detalles: 'Desarrollo integral de un departamento residencial, transformando una obra gris en un hogar diseñado alrededor de la forma de vivir de la familia. Cada espacio cumple una función específica, sin perder atención al buen gusto.',
+    imgs: [IMG.polanco2, IMG.polanco3, IMG.polanco1],
     bg: BRAND.crema
   }];
 
