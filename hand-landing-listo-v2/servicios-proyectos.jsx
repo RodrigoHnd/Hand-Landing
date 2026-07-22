@@ -3,6 +3,12 @@
 // ============================================================
 const { useState: useStateSP, useEffect: useEffectSP, useRef: useRefSP } = React;
 
+// Solo hay "hover real" con mouse/trackpad. En touch evitamos el zoom pegado.
+const canHoverSP =
+typeof window !== 'undefined' && window.matchMedia ?
+window.matchMedia('(hover: hover) and (pointer: fine)').matches :
+false;
+
 const Servicios = React.forwardRef((props, ref) => {
   const [innerRef, inView] = useInView(0.1);
   const [hovered, setHovered] = useStateSP(null);
@@ -244,6 +250,39 @@ const Lightbox = ({ images, startIndex, onClose }) => {
     };
   }, [total]);
 
+  // --- Swipe horizontal (móvil / tablet) ---
+  const touchStart = useRefSP(null);
+  const swiped = useRefSP(false);
+  const SWIPE_MIN = 40; // px de desplazamiento horizontal mínimo
+
+  const onTouchStart = (e) => {
+    const t = e.touches[0];
+    touchStart.current = { x: t.clientX, y: t.clientY };
+    swiped.current = false;
+  };
+
+  const onTouchEnd = (e) => {
+    const start = touchStart.current;
+    touchStart.current = null;
+    if (!start || total < 2) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    // Ignora gestos mayormente verticales
+    if (Math.abs(dx) < SWIPE_MIN || Math.abs(dx) <= Math.abs(dy)) return;
+    swiped.current = true; // evita que el click sintético cierre el visor
+    go(dx < 0 ? 1 : -1); // izquierda = siguiente, derecha = anterior
+  };
+
+  const handleBackdropClick = () => {
+    if (swiped.current) {
+      swiped.current = false;
+      return;
+    }
+    onClose();
+  };
+
+  // Controles siempre visibles (no dependen de hover) y con área táctil ≥ 44px
   const arrowStyle = {
     position: 'absolute',
     top: '50%',
@@ -252,7 +291,7 @@ const Lightbox = ({ images, startIndex, onClose }) => {
     height: 48,
     borderRadius: '50%',
     border: 'none',
-    backgroundColor: 'rgba(244,241,230,0.14)',
+    backgroundColor: 'rgba(244,241,230,0.18)',
     color: BRAND.marfil,
     fontSize: 30,
     lineHeight: 1,
@@ -261,13 +300,20 @@ const Lightbox = ({ images, startIndex, onClose }) => {
     alignItems: 'center',
     justifyContent: 'center',
     padding: 0,
+    opacity: 1,
+    zIndex: 2,
+    touchAction: 'manipulation',
+    WebkitTapHighlightColor: 'transparent',
     transition: 'background-color 0.3s'
   };
 
   return (
     <div
-      onClick={onClose}
+      onClick={handleBackdropClick}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
       style={{
+        touchAction: 'pan-y',
         position: 'fixed',
         inset: 0,
         zIndex: 2000,
@@ -288,12 +334,20 @@ const Lightbox = ({ images, startIndex, onClose }) => {
           width: 48,
           height: 48,
           border: 'none',
-          background: 'transparent',
+          borderRadius: '50%',
+          background: 'rgba(244,241,230,0.18)',
           color: BRAND.marfil,
           fontSize: 26,
           lineHeight: 1,
           cursor: 'pointer',
-          padding: 0
+          padding: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          opacity: 1,
+          zIndex: 2,
+          touchAction: 'manipulation',
+          WebkitTapHighlightColor: 'transparent'
         }}>
         ✕
       </button>
@@ -320,8 +374,11 @@ const Lightbox = ({ images, startIndex, onClose }) => {
         src={images[index]}
         alt={`Foto ${index + 1} de ${total}`}
         onClick={(e) => e.stopPropagation()}
+        draggable={false}
         style={{
           maxWidth: '90vw',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
           maxHeight: '85vh',
           objectFit: 'contain',
           borderRadius: 8,
@@ -362,16 +419,24 @@ const ProjectCard = ({ proyecto, index, totalCards, scrollY, cardStartY, vh, isD
   0;
   const currentScale = isLast ? 1 : 1 - nextCardProgress * 0.04;
 
-  // Capa interna de la foto: escala sutil al hover sin desbordar el contenedor
+  // Capa interna de la foto: escala sutil al hover sin desbordar el contenedor.
+  // En touch (sin hover fino) NO escala — evita que la foto se quede "zoom pegado"
+  // tras el tap; la foto sigue siendo tappable para abrir el lightbox.
   const imgLayer = (i) => ({
     position: 'absolute',
     inset: 0,
     backgroundImage: `url(${proyecto.imgs[i]})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    transform: hoverImg === i ? 'scale(1.06)' : 'scale(1)',
-    transition: 'transform 0.4s'
+    transform: canHoverSP && hoverImg === i ? 'scale(1.06)' : 'scale(1)',
+    transition: canHoverSP ? 'transform 0.4s' : 'none'
   });
+
+  // Solo escuchamos hover cuando existe un mouse real
+  const hoverProps = (i) =>
+  canHoverSP ?
+  { onMouseEnter: () => setHoverImg(i), onMouseLeave: () => setHoverImg(null) } :
+  {};
 
   return (
     <div style={{
@@ -516,8 +581,7 @@ const ProjectCard = ({ proyecto, index, totalCards, scrollY, cardStartY, vh, isD
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12, minHeight: 0 }}>
             <div
               onClick={() => onOpenImage(proyecto.imgs, 0)}
-              onMouseEnter={() => setHoverImg(0)}
-              onMouseLeave={() => setHoverImg(null)}
+              {...hoverProps(0)}
               style={{
                 flex: isDesktop ? 1 : 'none',
                 height: isDesktop ? 'auto' : 220,
@@ -531,8 +595,7 @@ const ProjectCard = ({ proyecto, index, totalCards, scrollY, cardStartY, vh, isD
             </div>
             <div
               onClick={() => onOpenImage(proyecto.imgs, 1)}
-              onMouseEnter={() => setHoverImg(1)}
-              onMouseLeave={() => setHoverImg(null)}
+              {...hoverProps(1)}
               style={{
                 flex: isDesktop ? 1.4 : 'none',
                 height: isDesktop ? 'auto' : 220,
@@ -547,8 +610,7 @@ const ProjectCard = ({ proyecto, index, totalCards, scrollY, cardStartY, vh, isD
           </div>
           <div
             onClick={() => onOpenImage(proyecto.imgs, 2)}
-            onMouseEnter={() => setHoverImg(2)}
-            onMouseLeave={() => setHoverImg(null)}
+            {...hoverProps(2)}
             style={{
               height: isDesktop ? 'auto' : 220,
               borderRadius: isDesktop ? 24 : 16,
