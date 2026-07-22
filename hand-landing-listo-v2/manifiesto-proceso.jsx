@@ -257,7 +257,8 @@ const Proceso = React.forwardRef((props, ref) => {
                 lineHeight: 1.15,
                 letterSpacing: '-0.02em',
                 color: BRAND.tinta,
-                margin: 0
+                margin: 0,
+                minHeight: isDesktop ? '2.3em' : undefined
               }}>
                   {p.t}
                 </h3>
