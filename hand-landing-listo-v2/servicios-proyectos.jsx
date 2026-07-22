@@ -517,7 +517,7 @@ const Proyectos = React.forwardRef((props, ref) => {
               color: BRAND.terracota,
               marginBottom: 20
             }}>
-              — Proyectos · Selección 2024–2026
+              — Proyectos · Selección 2025–2026
             </div>
             <BrandHeadline
               bold="Nuestros"
