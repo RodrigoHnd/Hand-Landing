@@ -9,6 +9,7 @@ const Nav = ({ scrolled, logoVisible, onNav }) => {
   const links = [
   { id: 'manifiesto', label: 'Manifiesto' },
   { id: 'proceso', label: 'Proceso' },
+  { id: 'equipo', label: 'Equipo' },
   { id: 'servicios', label: 'Servicios' },
   { id: 'proyectos', label: 'Proyectos' },
   { id: 'contacto', label: 'Contacto' }];
@@ -299,7 +300,7 @@ const Hero = ({ onNav }) => {
               Cuéntanos tu proyecto ↗
             </button>
             <a
-              href="https://wa.me/528145931116?text=Hola%20HND%2C%20me%20interesa%20agendar%20una%20cita"
+              href={`https://wa.me/${CONFIG.whatsappNumber}?text=Hola%20HND%2C%20me%20interesa%20agendar%20una%20cita`}
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -494,7 +495,7 @@ const Hero = ({ onNav }) => {
                 Cuéntanos tu proyecto ↗
               </button>
               <a
-                href="https://wa.me/528145931116?text=Hola%20HND%2C%20me%20interesa%20agendar%20una%20cita"
+                href={`https://wa.me/${CONFIG.whatsappNumber}?text=Hola%20HND%2C%20me%20interesa%20agendar%20una%20cita`}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{

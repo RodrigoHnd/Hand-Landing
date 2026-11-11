@@ -24,11 +24,12 @@ const FONT = {
 // 1) web3formsKey: crear gratis en https://web3forms.com (usar el
 //    correo contacto@hndarquitectura.com al generarla) y pegar aquí.
 // 2) whatsappNumber: formato internacional SIN "+", SIN espacios.
-//    Brief indica 8145931116 -> con lada MX = 528145931116
-//    (CONFIRMAR con cliente si la lada es 33 u otra).
+//    Número actual: 33 4766 0725 -> con lada MX = 523347660725
+// 3) telefonoDisplay: cómo se muestra el número en la página.
 const CONFIG = {
   web3formsKey: '17457e6e-3788-4266-8fa2-4737d392b638',
-  whatsappNumber: '528145931116',
+  whatsappNumber: '523347660725',
+  telefonoDisplay: '+52 33 4766 0725',
   whatsappMessage: 'Hola, quiero información sobre un proyecto con HND.'
 };
 
@@ -68,6 +69,12 @@ const IMG = {
   polanco1: 'images/polanco-1.jpg',
   polanco2: 'images/polanco-2.jpg',
   polanco3: 'images/polanco-3.jpg',
+  // Equipo
+  equipoGrupal: 'images/equipo-grupal.jpg',
+  equipoGrupalMovil: 'images/equipo-grupal-movil.jpg',
+  equipoAlfonso: 'images/equipo-alfonso.jpg',
+  equipoJoseIgnacio: 'images/equipo-jose-ignacio.jpg',
+  equipoRodrigo: 'images/equipo-rodrigo.jpg',
   // Casa Zibata Querétaro
   zibata1: 'images/zibata-1.jpg', // exterior noche
   zibata2: 'images/zibata-2.jpg', // interior con escalera/comedor

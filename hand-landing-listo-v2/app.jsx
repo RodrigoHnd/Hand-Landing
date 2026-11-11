@@ -9,6 +9,7 @@ function HandLanding() {
     top: React.useRef(null),
     manifiesto: React.useRef(null),
     proceso: React.useRef(null),
+    equipo: React.useRef(null),
     servicios: React.useRef(null),
     proyectos: React.useRef(null),
     contacto: React.useRef(null),
@@ -49,6 +50,7 @@ function HandLanding() {
       <Hero onNav={handleNav} />
       <Manifiesto ref={refs.manifiesto} />
       <Proceso ref={refs.proceso} />
+      <Equipo ref={refs.equipo} />
       <FraseAislada />
       <Servicios ref={refs.servicios} />
       <Proyectos ref={refs.proyectos} />

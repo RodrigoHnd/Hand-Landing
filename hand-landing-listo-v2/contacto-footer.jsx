@@ -252,8 +252,7 @@ const Contacto = React.forwardRef((props, ref) => {
             }}>
               <div>
                 <div style={fieldLabel}>Teléfono</div>
-                <p style={{ fontFamily: FONT.mono, fontSize: 13, color: BRAND.tinta, margin: 0 }}>+52 81 4593 1116
-
+                <p style={{ fontFamily: FONT.mono, fontSize: 13, color: BRAND.tinta, margin: 0 }}>{CONFIG.telefonoDisplay}
                 </p>
               </div>
               <div>
@@ -268,7 +267,7 @@ const Contacto = React.forwardRef((props, ref) => {
               <div style={{ ...fieldLabel, marginBottom: 14 }}>Accesos directos</div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                 <a
-                  href="https://wa.me/528145931116?text=Hola%20HND%2C%20me%20interesa%20platicar%20sobre%20un%20proyecto."
+                  href={`https://wa.me/${CONFIG.whatsappNumber}?text=Hola%20HND%2C%20me%20interesa%20platicar%20sobre%20un%20proyecto.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -549,6 +548,16 @@ const Contacto = React.forwardRef((props, ref) => {
                   }}>
                       Respuesta en 24 hrs hábiles · Primera sesión sin costo.
                     </div>
+                    <div style={{
+                    fontFamily: FONT.sans,
+                    fontSize: 12,
+                    color: BRAND.gris,
+                    maxWidth: '32ch',
+                    marginTop: 6
+                  }}>
+                      Al enviar aceptas nuestro{' '}
+                      <a href="aviso-de-privacidad.html" target="_blank" rel="noopener" style={{ color: BRAND.terracota }}>Aviso de privacidad</a>.
+                    </div>
                   </div>
                   <button
                   type="button"
@@ -680,7 +689,7 @@ const Footer = () => {
                 contacto@hndarquitectura.com
               </li>
               <li style={{ fontFamily: FONT.mono, fontSize: 13, color: BRAND.marfil, opacity: 0.9, marginBottom: 6 }}>
-                +52 81 4593 1116
+                {CONFIG.telefonoDisplay}
               </li>
               <li style={{ fontFamily: FONT.sans, fontSize: 14, fontWeight: 300, color: BRAND.marfil, opacity: 0.85 }}>
               </li>
@@ -787,6 +796,7 @@ const Footer = () => {
             textTransform: 'uppercase',
             color: `${BRAND.marfil}50`
           }}>
+            <a href="aviso-de-privacidad.html" style={{ color: `${BRAND.marfil}80`, textDecoration: 'none' }}>Aviso de privacidad</a>
           </span>
         </div>
       </Container>
