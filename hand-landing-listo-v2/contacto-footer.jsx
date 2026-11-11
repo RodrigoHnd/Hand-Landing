@@ -580,7 +580,7 @@ const Contacto = React.forwardRef((props, ref) => {
                   onMouseEnter={(e) => !sending && (e.currentTarget.style.opacity = 0.88)}
                   onMouseLeave={(e) => !sending && (e.currentTarget.style.opacity = 1)}>
 
-                    {sending ? 'Enviando…' : 'Enviar proyecto ↗'}
+                    {sending ? 'Enviando…' : 'Enviar mi proyecto ↗'}
                   </button>
                 </div>
 
